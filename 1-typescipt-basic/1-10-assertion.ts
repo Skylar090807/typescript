@@ -1,5 +1,5 @@
 {
-  //Type Assertions 💩
+  //Type Assertions 주장 💩
   //type을 100% 확신할 때만 사용할 것.
 
   function jsStrFunc(): any {

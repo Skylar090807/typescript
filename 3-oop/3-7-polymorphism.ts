@@ -1,4 +1,5 @@
 {
+  //polymorphism 다형성
   type CoffeeCup = {
     shots: number
     hasMilk?: boolean

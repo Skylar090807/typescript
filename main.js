@@ -1,42 +1,69 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 {
-    var StackImpl = /** @class */ (function () {
-        //interface 멤버변수 size의 경우, 구현할 때도 readonly를 하게 되면 값 변경을 할 수 없으므로 제어자를 private으로 지정.
-        //외부에서 접근할 수 있도록 getter 사용.
-        function StackImpl(capacity) {
-            this.capacity = capacity;
-            this._size = 0; //내부에서 사용하는 변수를 public도 만들어줄 때 내부에서만 사용하는 변수 이름 앞에 _ 사용
+    var TimeoutError = /** @class */ (function (_super) {
+        __extends(TimeoutError, _super);
+        function TimeoutError() {
+            return _super !== null && _super.apply(this, arguments) || this;
         }
-        Object.defineProperty(StackImpl.prototype, "size", {
-            get: function () {
-                return this._size;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        StackImpl.prototype.push = function (value) {
-            if (this.size === this.capacity) {
-                throw new Error('Stack is full');
-            }
-            var node = { value: value, next: this.head }; //value와 key값이 같을 때 value, 와 같이 작성 가능.
-            this.head = node;
-            this._size++;
+        return TimeoutError;
+    }(Error));
+    var OfflineError = /** @class */ (function (_super) {
+        __extends(OfflineError, _super);
+        function OfflineError() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        return OfflineError;
+    }(Error));
+    var NetworkClient = /** @class */ (function () {
+        function NetworkClient() {
+        }
+        NetworkClient.prototype.tryConnect = function () {
+            throw new Error('no network!');
         };
-        StackImpl.prototype.pop = function () {
-            if (this.head == null) {
-                throw new Error('Stack is empty!');
-            }
-            var node = this.head;
-            this.head = node.next;
-            this._size--;
-            return node.value;
-        };
-        return StackImpl;
+        return NetworkClient;
     }());
-    var stack = new StackImpl(10);
-    stack.push('Skylar 1');
-    stack.push('Alexis 2');
-    stack.push('Sophia 3');
-    while (stack.size !== 0) {
-        console.log(stack.pop());
-    }
+    var UserService = /** @class */ (function () {
+        function UserService(client) {
+            this.client = client;
+        }
+        UserService.prototype.login = function () {
+            this.client.tryConnect();
+        };
+        return UserService;
+    }());
+    var App = /** @class */ (function () {
+        function App(userService) {
+            this.userService = userService;
+        }
+        App.prototype.run = function () {
+            try {
+                this.userService.login();
+            }
+            catch (error) {
+                //catch로 error를 받는 순간 any type이 된다.
+                //show dialog to user
+                // if(error instanceof OfflineError){
+                // }
+            }
+        };
+        return App;
+    }());
+    var client = new NetworkClient();
+    var service = new UserService(client);
+    var app = new App(service);
+    app.run();
 }
