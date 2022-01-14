@@ -1,13 +1,14 @@
-import { ImageComponent } from './components/page/item/image.js';
-import { NoteComponent } from './components/page/item/note.js';
-import { TodoComponent } from './components/page/item/todo.js';
+import { InputDialog } from './components/dialog/dialog.js';
 import { VideoComponent } from './components/page/item/video.js';
-import { PageComponent } from './components/page/page.js';
+import { TodoComponent } from './components/page/item/todo.js';
+import { NoteComponent } from './components/page/item/note.js';
+import { ImageComponent } from './components/page/item/image.js';
+import { PageComponent, PageItemComponent } from './components/page/page.js';
 class App {
     constructor(appRoot) {
-        this.page = new PageComponent();
-        this.page.attachTo(appRoot, 'beforeend');
-        const image = new ImageComponent('Image Title', 'https://picsum.photos/600/300.jpg');
+        this.page = new PageComponent(PageItemComponent);
+        this.page.attachTo(appRoot);
+        const image = new ImageComponent('Image Title', 'https://picsum.photos/600/300');
         this.page.addChild(image);
         const video = new VideoComponent('Video Title', 'https://youtu.be/XLJKSfOTT80');
         this.page.addChild(video);
@@ -15,6 +16,17 @@ class App {
         this.page.addChild(note);
         const todo = new TodoComponent('Todo Title', 'Todo Item');
         this.page.addChild(todo);
+        const imageBtn = document.querySelector('#new-image');
+        imageBtn.addEventListener('click', () => {
+            const dialog = new InputDialog();
+            dialog.setOnCloseListenr(() => {
+                dialog.removeFrom(document.body);
+            });
+            dialog.setOnSubmitListenr(() => {
+                dialog.removeFrom(document.body);
+            });
+            dialog.attachTo(document.body);
+        });
     }
 }
 new App(document.querySelector('.document'));

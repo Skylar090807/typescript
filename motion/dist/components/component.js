@@ -9,7 +9,7 @@ export class BaseComponent {
     }
     removeFrom(parent) {
         if (parent !== this.element.parentElement) {
-            throw new Error('Parent mismatch!!');
+            throw new Error('Parent mismatch!');
         }
         parent.removeChild(this.element);
     }
