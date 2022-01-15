@@ -15,7 +15,7 @@
 
   --document-bg-color: #68686850;
 
-  --component-bg-gradient: radial-gradient(circle, #646464e6 0%, #363636e6 100%);
+  --component-bg-gradient: linear-gradient(90deg, rgba(201,200,203,0.7380352644836272) 0%, rgba(46,45,46,1) 100%);
 
   --smokywhite: #dddbd8;
 
@@ -29,8 +29,24 @@ li {
   padding-left: 0;
 }
 
+p{
+  color: #575757;
+}
+
 label {
   color: var(--text-accent-color);
+}
+
+button {
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+input, textarea {
+  background-color: var(--text-edit-bg-color)
+  color: var(--smokywhite)
+  font-size: 1.5em;
 }
 
 * {
@@ -75,7 +91,8 @@ body {
   justify-content: center;
 }
 
-.create-button {
+.create-button,
+.dialog__submit {
   margin: 0.1em 0.2em;
   color: #ffffff;
   text-align: center;
@@ -86,6 +103,13 @@ body {
   background-color: var(--bg-main-color);
   border-color: var(--accent-color);
   border-radius: 2px;
+  transition: 250ms ease-in-out;
+}
+
+.create-button:hover {
+  cursor: pointer;
+  color:wheat;
+  transform: scale(1.05)
 }
 
 .document {
@@ -118,15 +142,19 @@ body {
 /* Dialog */
 .dialog {
   display: flex;
-  align-item: center;
+  align-items: center;
   justify-content: center;
   z-index: 1;
-  position: fixed;
-  left: 0;
-  top: 0;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
   width: 100%;
   font-size: 1.2rem;
-  background-color: var(--document-bg-color);
+  /* 배경색 적용 버전 */
+  /* background-color: var(--document-bg-color);  */
+  background-color: transparent;
+  border: 0;
 }
 
 .dialog__container {
@@ -139,4 +167,116 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   box-shadow: 2px 2px 20px var(--shadow-color);
+  
 }
+
+.form__container {
+  display: flex;
+  flex-direction: column;
+  margin_bottom: 1em;
+}
+
+.close {
+  align-self: flex-end;
+  padding:0.2rem;
+  color:var(--accent-color);
+  font-size: 28px;
+  font-weight: bold;
+  margin: 3px;
+  transition: color 250ms ease;
+}
+
+.close:hover,
+.close:focus {
+  transform: scale(1.5);
+  color: wheat;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dialog__submit {
+  align-self: flex-end;
+  padding: 0.5em 1.5em;
+  transition: color 250ms ease;
+}
+
+.dialog__submit:hover {
+  transform: scale(1.1);
+  color: wheat;
+  cursor: pointer;
+}
+
+/* page */
+.page-item {
+  margin: 1.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 2px 2px 6px var(--shadow-color);
+  background: var(--component-bg-gradient);
+}
+
+.page-item__controls {
+  padding-right: 0.5em;
+}
+
+.page-item__title {
+  color: #FFFFFF;
+  background: transparent;
+  text-shadow: 3px 5px 2px #474747;
+}
+
+.page-item__body {
+  width: 100%
+}
+
+/* video, image */
+.video,
+.image {
+  display: flex;
+  width: 100%;
+  height: 250px;
+}
+
+.video__player,
+.image__holder {
+  flex: 60% 1 1;
+}
+
+.video__title,
+.image__title {
+  flex: 40% 1 1;
+  margin-left: 0.5em;
+}
+
+.video__iframe{
+  border:none;
+  width: 100%;
+  height: 100%;
+}
+
+.image__thumbnail {
+  width:100%;
+  height: 100%;
+}
+
+/* note */
+.note {
+  padding: 0.5em;
+}
+
+/* todo */
+.todo {
+  padding: 0.5em;
+}
+
+.todo__list,
+.todo-label {
+  padding: 1em;
+  color: black;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 25px;
+
+}
+
+
