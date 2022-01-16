@@ -45,6 +45,16 @@ class App {
       TextSectionInput,
       (input: TextSectionInput) => new TodoComponent(input.title, input.body),
     )
+
+    //For drag & drop
+    this.page.addChild(new ImageComponent('Image Title', 'https://picsum.photos/200/300.jpg'))
+    this.page.addChild(new VideoComponent('Video Title', 'https://youtu.be/uvaeGbN2ZGA'))
+    this.page.addChild(new NoteComponent('Note Title', 'Note Note Note'))
+    this.page.addChild(new TodoComponent('Todo title', 'Todo Todo Todo Todo'))
+    this.page.addChild(new ImageComponent('Image Title', 'https://picsum.photos/200/300.jpg'))
+    this.page.addChild(new VideoComponent('Video Title', 'https://youtu.be/uvaeGbN2ZGA'))
+    this.page.addChild(new NoteComponent('Note Title', 'Note Note Note'))
+    this.page.addChild(new TodoComponent('Todo title', 'Todo Todo Todo Todo'))
   }
 
   //코드 사용이 계속 중복 될 때 function으로 바꾸는 tip!

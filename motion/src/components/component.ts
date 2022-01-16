@@ -1,6 +1,7 @@
 export interface Component {
   attachTo(parent: HTMLElement, position?: InsertPosition): void
   removeFrom(parent: HTMLElement): void
+  attach(component: Component, position?: InsertPosition): void
 }
 
 //Encapsulate the HTML element creation
@@ -17,6 +18,7 @@ export class BaseComponent<T extends HTMLElement> implements Component {
 
   attachTo(parent: HTMLElement, position: InsertPosition = 'afterbegin') {
     parent.insertAdjacentElement(position, this.element)
+    // https://developer.mozilla.org/ko/docs/Web/API/Element/insertAdjacentHTML
   }
 
   removeFrom(parent: HTMLElement) {
@@ -24,5 +26,9 @@ export class BaseComponent<T extends HTMLElement> implements Component {
       throw new Error('Parent mismatch!')
     }
     parent.removeChild(this.element)
+  }
+
+  attach(component: Component, position?: InsertPosition): void {
+    component.attachTo(this.element, position)
   }
 }
