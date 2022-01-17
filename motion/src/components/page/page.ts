@@ -1,3 +1,6 @@
+import { Hoverable, Droppable } from './../common/type'
+import { EnableDragging, EnableDrop, EnableHover } from '../../decorators/draggable.js'
+import { Draggable } from '../common/type.js'
 import { BaseComponent, Component } from './../component.js'
 
 export interface Composable {
@@ -7,7 +10,7 @@ type OnCloseListener = () => void
 type DragState = 'start' | 'stop' | 'enter' | 'leave'
 type OnDragStateListener<T extends Component> = (target: T, state: DragState) => void
 
-interface SectionContainer extends Component, Composable {
+interface SectionContainer extends Component, Composable, Draggable, Hoverable {
   setOnCloseListener(listener: OnCloseListener): void
   setOnDragStateListener(listener: OnDragStateListener<SectionContainer>): void
   muteChildren(state: 'mute' | 'unmute'): void
@@ -19,6 +22,8 @@ type SectionContainerConstructor = {
   new (): SectionContainer
 }
 
+@EnableDragging
+@EnableHover
 export class PageItemComponent extends BaseComponent<HTMLElement> implements SectionContainer {
   private closeListener?: OnCloseListener
   private dragStateListener?: OnDragStateListener<PageItemComponent>
@@ -37,19 +42,19 @@ export class PageItemComponent extends BaseComponent<HTMLElement> implements Sec
       this.closeListener && this.closeListener()
     }
 
-    //drag and drop
-    this.element.addEventListener('dragstart', (event: DragEvent) => {
-      this.onDragStart(event)
-    })
-    this.element.addEventListener('dragend', (event: DragEvent) => {
-      this.onDragEnd(event)
-    })
-    this.element.addEventListener('dragenter', (event: DragEvent) => {
-      this.onDragEnter(event)
-    })
-    this.element.addEventListener('dragleave', (event: DragEvent) => {
-      this.onDragLeave(event)
-    })
+    //drag and drop -> 하나씩 event 처리했던 것들을 Decorators 적용하기 위해서 주석 처리!!
+    // this.element.addEventListener('dragstart', (event: DragEvent) => {
+    //   this.onDragStart(event)
+    // })
+    // this.element.addEventListener('dragend', (event: DragEvent) => {
+    //   this.onDragEnd(event)
+    // })
+    // this.element.addEventListener('dragenter', (event: DragEvent) => {
+    //   this.onDragEnter(event)
+    // })
+    // this.element.addEventListener('dragleave', (event: DragEvent) => {
+    //   this.onDragLeave(event)
+    // })
   }
 
   //drag and drop
@@ -108,7 +113,8 @@ export class PageItemComponent extends BaseComponent<HTMLElement> implements Sec
   }
 }
 
-export class PageComponent extends BaseComponent<HTMLUListElement> implements Composable {
+@EnableDrop
+export class PageComponent extends BaseComponent<HTMLUListElement> implements Composable, Droppable {
   // map은 중복된 data를 가질 수 있지만, set은 중복된 data를 가질 수 없다.
   private children = new Set<SectionContainer>()
   private dragTarget?: SectionContainer
@@ -116,24 +122,27 @@ export class PageComponent extends BaseComponent<HTMLUListElement> implements Co
 
   constructor(private pageItemConstructor: SectionContainerConstructor) {
     super('<ul class="page"></ul>')
-    this.element.addEventListener('dragover', (event: DragEvent) => {
-      this.onDragOver(event)
-    })
-    this.element.addEventListener('drop', (event: DragEvent) => {
-      this.onDrop(event)
-    })
+    // Drag and Drop -> Decorators 적용하기 위해서 주석 처리!!
+    // this.element.addEventListener('dragover', (event: DragEvent) => {
+    //   this.onDragOver(event)
+    // })
+    // this.element.addEventListener('drop', (event: DragEvent) => {
+    //   this.onDrop(event)
+    // })
   }
 
   // drop event가 일어났을 때 event.preventDefault()를 호출해준다.
   // 각 핸들러는 preventDefault() 를 호출해 추가적인 이벤트 (터치 이벤트나 포인터 이벤트) 가 일어나지 않도록 한다.
-  onDragOver(event: DragEvent) {
-    event.preventDefault()
-    console.log('onDragOver')
-  }
-  onDrop(event: DragEvent) {
-    console.log('onDrop', this.dropTarget)
+  // onDragOver(event: DragEvent) { //Decorators 적용하기 위해서 주석 처리!!
+  //   event.preventDefault()
+  //   console.log('onDragOver')
+  // }
 
-    event.preventDefault()
+  onDragOver(_: DragEvent): void {}
+  onDrop(event: DragEvent) {
+    // console.log('onDrop', this.dropTarget)
+
+    // event.preventDefault() //Decorators 적용하기 위해서 주석 처리!!
     //위치 바꿔주기
     if (!this.dropTarget) {
       return
